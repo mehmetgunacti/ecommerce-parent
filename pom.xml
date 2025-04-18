@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-							 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+			http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.wolf359apps.ecommerce</groupId>
@@ -10,7 +10,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<java.version>24</java.version>
+		<java.version>21</java.version>
 		<spring-boot.version>3.4.4</spring-boot.version>
 		<spring-cloud.version>2024.0.1</spring-cloud.version>
 		<maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
@@ -38,28 +38,28 @@
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>
-			
+
 		</dependencies>
 
 	</dependencyManagement>
-	
-    <dependencies>
 
-        <!-- Spring Boot Starter Test -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+	<dependencies>
 
-        <!-- JUnit Juniper -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
+		<!-- Spring Boot Starter Test -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-    </dependencies>
+		<!-- JUnit Juniper -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -84,17 +84,22 @@
 
 			<!-- JIB MAVEN -->
 			<plugin>
-			  <groupId>com.google.cloud.tools</groupId>
-			  <artifactId>jib-maven-plugin</artifactId>
-			  <version>${jib-maven-plugin.version}</version>
-			  <executions>
-				<execution>
-				  <phase>package</phase>
-				  <goals>
-					<goal>build</goal>
-				  </goals>
-				</execution>
-			  </executions>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>${jib-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>dockerBuild</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<to>
+						<image>${project.artifactId}:latest</image>
+					</to>
+				</configuration>
 			</plugin>
 
 		</plugins>
