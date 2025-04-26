@@ -99,6 +99,8 @@
 					<to>
 						<image>host.docker.internal:5000/${project.artifactId}:latest</image>
 					</to>
+					<!-- Enables JIB to push images to registries that use HTTP instead of HTTPS -->
+					<allowInsecureRegistries>true</allowInsecureRegistries>
 				</configuration>
 			</plugin>
 
