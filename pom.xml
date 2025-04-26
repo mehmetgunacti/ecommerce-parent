@@ -97,7 +97,7 @@
 				</executions>
 				<configuration>
 					<to>
-						<image>localhost:5000/${project.artifactId}:latest</image>
+						<image>host.docker.internal:5000/${project.artifactId}:latest</image>
 					</to>
 				</configuration>
 			</plugin>
