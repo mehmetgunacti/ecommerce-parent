@@ -91,13 +91,13 @@
 					<execution>
 						<phase>package</phase>
 						<goals>
-							<goal>dockerBuild</goal>
+							<goal>build</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
 					<to>
-						<image>${project.artifactId}:latest</image>
+						<image>localhost:5000/${project.artifactId}:latest</image>
 					</to>
 				</configuration>
 			</plugin>
