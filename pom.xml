@@ -97,6 +97,21 @@
 				</executions>
 				<configuration>
 					<to>
+						<!--
+							host.docker.internal is a special DNS hostname provided by Docker.
+							It maps to the host machine's IP address, allowing containers to communicate with services running on the host.
+							
+							By starting the container with --add-host=host.docker.internal:host-gateway we add host.docker.internal to the container's /etc/hosts file.
+							This maps host.docker.internal to the host machine's IP address (host-gateway).
+							
+							This ensures that Jib, running inside the Jenkins container, can resolve host.docker.internal as the host's IP and push the created image to the local Docker registry using HTTP.
+							
+							Alternatives:
+							1) When both containers run inside the same Docker environment, we could simply use registry container's service name:
+							   <image>registry:5000/...</image>
+							2) An /etc/hosts entry, pointing to the host's IP, which will be used by Minikube, could also be used here:
+							   <image>local-registry:5000/...</image>
+						-->
 						<image>host.docker.internal:5000/${project.artifactId}:latest</image>
 					</to>
 					<!-- Enables JIB to push images to registries that use HTTP instead of HTTPS -->
