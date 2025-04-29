@@ -97,8 +97,8 @@
 				</executions>
 				<configuration>
 					<to>
-						<!-- FQDN of the MicroK8s registry service within the cluster -->
-						<image>registry.container-registry.svc.cluster.local:5000/${project.artifactId}:latest</image>
+						<!-- FQDN of the registry service within the cluster -->
+						<image>registry.ecommerce-registry.svc.cluster.local:5000/${project.artifactId}:latest</image>
 					</to>
 					<allowInsecureRegistries>true</allowInsecureRegistries>
 				</configuration>

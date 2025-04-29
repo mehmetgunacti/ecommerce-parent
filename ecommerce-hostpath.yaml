@@ -1,0 +1,10 @@
+# ssd-hostpath-sc.yaml
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: ecommerce-hostpath
+provisioner: microk8s.io/hostpath
+reclaimPolicy: Retain # vs Delete
+parameters:
+  pvDir: /home/mserkan/dev/ecommerce/data
+volumeBindingMode: Immediate # vs WaitForFirstConsumer; Immediate is default

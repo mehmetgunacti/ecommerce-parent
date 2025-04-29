@@ -7,8 +7,9 @@ spec:
     storage: 10Gi
   accessModes:
     - ReadWriteOnce
+  storageClassName: "ecommerce-hostpath" # Static PV
   hostPath:
-    path: /mnt/data/jenkins_home
+    path: /home/mserkan/dev/ecommerce/jenkins_home
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -17,9 +18,11 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: ""
   resources:
     requests:
       storage: 10Gi
+  volumeName: jenkins-pv  # Bind explicitly to our static PV
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -39,7 +42,7 @@ spec:
     spec:
       containers:
       - name: jenkins
-        image: jenkins/jenkins:jdk21
+        image: localhost:32000/ecommerce-jenkins-kubectl:latest
         env:
           - name: JENKINS_OPTS
             value: "--prefix=/jenkins"
