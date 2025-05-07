@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ecommerce-jenkins
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ecommerce-dashboard
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ecommerce
