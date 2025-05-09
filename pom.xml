@@ -15,6 +15,9 @@
 		<spring-cloud.version>2024.0.1</spring-cloud.version>
 		<maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
 		<jib-maven-plugin.version>3.4.5</jib-maven-plugin.version>
+		<org.mapstruct.version>1.6.3</org.mapstruct.version>
+		<openapi-generator-maven-plugin.version>7.13.0</openapi-generator-maven-plugin.version>
+		<lombok.version>1.18.38</lombok.version>
 	</properties>
 
 	<dependencyManagement>
@@ -59,9 +62,59 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- MAPSTRUCT -->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>
+		
+		<!-- LOMBOK -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
+	
+		<pluginManagement>
+
+			<plugins>
+				<plugin>
+					<groupId>org.openapitools</groupId>
+					<artifactId>openapi-generator-maven-plugin</artifactId>
+					<version>${openapi-generator-maven-plugin.version}</version>
+					<configuration>
+						<output>${project.build.directory}/generated-sources</output>
+						<generatorName>java</generatorName>
+						<generateApis>false</generateApis>
+						<generateModels>true</generateModels>
+						<generateApiTests>false</generateApiTests>
+						<generateApiDocumentation>false</generateApiDocumentation>
+						<generateModelDocumentation>false</generateModelDocumentation>
+						<generateModelTests>false</generateModelTests>
+						<generateSupportingFiles>false</generateSupportingFiles>
+						<modelNameSuffix>DTO</modelNameSuffix>
+						<configOptions>
+							<library>native</library>
+							<enumPropertyNaming>MACRO_CASE</enumPropertyNaming>
+							<serializationLibrary>jackson</serializationLibrary>
+							<sourceFolder>generated</sourceFolder>
+							<useJakartaEe>true</useJakartaEe>
+							<supportUrlQuery>false</supportUrlQuery>
+							<useBeanValidation>false</useBeanValidation>
+						</configOptions>
+					</configuration>
+				</plugin>
+
+			</plugins>
+
+		</pluginManagement>
+	
 		<plugins>
 
 			<!-- SPRING BOOT MAVEN -->
@@ -77,8 +130,19 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
+					<release>${java.version}</release>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${org.mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 
