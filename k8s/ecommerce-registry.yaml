@@ -1,0 +1,123 @@
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: registry-pv
+#spec:
+#  storageClassName: manual
+#  capacity:
+#    storage: 20Gi
+#  accessModes:
+#    - ReadWriteOnce
+#  hostPath:
+#    path: /home/mserkan/dev/ecommerce/registry-data
+#---
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: registry-pvc
+#  namespace: ecommerce-registry
+#spec:
+#  storageClassName: manual
+#  accessModes:
+#    - ReadWriteOnce
+#  resources:
+#    requests:
+#      storage: 20Gi
+#---
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: registry
+#  namespace: ecommerce-registry
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: registry
+#  template:
+#    metadata:
+#      labels:
+#        app: registry
+#    spec:
+#      containers:
+#      - name: registry
+#        image: registry:2
+#        ports:
+#        - containerPort: 5000
+#        volumeMounts:
+#        - name: registry-data
+#          mountPath: /var/lib/registry
+#      volumes:
+#      - name: registry-data
+#        persistentVolumeClaim:
+#          claimName: registry-pvc
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: registry-service
+#  namespace: ecommerce-registry
+#spec:
+#  selector:
+#    app: registry
+#  ports:
+#  - port: 5000
+#    targetPort: 5000
+#---
+## Create ecommerce-registry.crt and ecommerce-registry.key files:
+##
+## openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+##  -keyout registry.key \
+##  -out registry.crt \
+##  -subj "/CN=registry.ecommerce.local/O=ecommerceRegistry"
+##
+## To create base64 strings:
+## base64 -w0 ecommerce-registry.crt
+## base64 -w0 ecommerce-registry.key
+#apiVersion: v1
+#kind: Secret
+#metadata:
+#  name: registry-tls
+#  namespace: ecommerce-registry
+#type: kubernetes.io/tls
+#data:
+#  tls.crt: LS0tLS1CRUdJTiBD...
+#  tls.key: LS0tLS1CRUdJTiBQ...
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: registry-ingress
+#  namespace: ecommerce-registry
+#  annotations:
+#    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+#    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+#    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+#    nginx.ingress.kubernetes.io/proxy-body-size: "5G"
+#spec:
+#  ingressClassName: "nginx"
+#  tls:
+#  - hosts:
+#    - registry.ecommerce.local
+#    secretName: ecommerce-registry-tls
+#  rules:
+#  - host: registry.ecommerce.local
+#    http:
+#      paths:
+#      - path: /v2/
+#        pathType: Prefix
+#        backend:
+#          service:
+#            name: ecommerce-registry
+#            port:
+#              number: 5000
+#
+## To force image pulls over HTTP (i.e. to mark your registry as "insecure"),
+## you must configure the container runtime on your cluster nodes accordingly.
+## -> Add this to /etc/containerd/config.toml
+## [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+##   [plugins."io.containerd.grpc.v1.cri".registry.mirrors."registry.ecommerce-registry.svc.cluster.local:5000"]
+##     endpoint = ["http://registry.ecommerce-registry.svc.cluster.local:5000"]
+##
+## then restart containerd: `sudo systemctl restart containerd`
+
