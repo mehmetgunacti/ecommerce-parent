@@ -32,8 +32,6 @@ sudo systemctl daemon-reload
 
 sudo cp ecommerce-registry.crt /usr/local/share/ca-certificates/ecommerce-registry.crt
 sudo update-ca-certificates
-
-# Then restart the cluster nodes as needed.
 ```
 
 Tests:
