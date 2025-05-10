@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: product-container
-          image: registry.ecommerce.local:5000/ecommerce-product-service:latest
+          image: registry.ecommerce.local:5000/ecommerce-product-service:0.0.2
           ports:
             - containerPort: 9090
 ---
