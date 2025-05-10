@@ -172,7 +172,7 @@
 							'registry' running inside Docker
 							(registry.ecommerce.local is a Windows hosts file entry pointing to WSL IP address)
 						 -->
-						<image>registry.ecommerce.local:5000/${project.artifactId}:latest</image>
+						<image>registry.ecommerce.local:5000/${project.artifactId}:${project.version}</image>
 					</to>
 					<allowInsecureRegistries>true</allowInsecureRegistries>
 				</configuration>
