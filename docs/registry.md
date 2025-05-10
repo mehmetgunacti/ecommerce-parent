@@ -50,4 +50,7 @@ docker push registry.ecommerce.local:5000/busybox
 curl -k https://registry.ecommerce.local:5000/v2/_catalog
 
 # Correct output: {"repositories":["busybox"]}
+
+# List tags of an image
+curl -k https://registry.ecommerce.local:5000/v2/busybox/tags/list
 ```
