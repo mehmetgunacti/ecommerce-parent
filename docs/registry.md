@@ -34,8 +34,21 @@ sudo cp ecommerce-registry.crt /usr/local/share/ca-certificates/ecommerce-regist
 sudo update-ca-certificates
 
 # Then restart the cluster nodes as needed.
+```
 
-# Tests
-docker pull registry.ecommerce.local:5000/ecommerce-jenkins-kubectl:latest
-# re-apply deployment
+Tests:
+```bash
+# Pull a lightweight image
+docker pull busybox
+
+# Tag the image
+docker tag busybox registry.ecommerce.local:5000/busybox
+
+# Push image to local registry
+docker push registry.ecommerce.local:5000/busybox
+
+# Verify
+curl -k https://registry.ecommerce.local:5000/v2/_catalog
+
+# Correct output: {"repositories":["busybox"]}
 ```
