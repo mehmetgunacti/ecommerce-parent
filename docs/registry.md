@@ -46,6 +46,7 @@ docker tag busybox registry.ecommerce.local:5000/busybox
 docker push registry.ecommerce.local:5000/busybox
 
 # Verify
+# Note: registry.ecommerce.local is a Windows hosts file entry pointing to WSL IP address
 curl -k https://registry.ecommerce.local:5000/v2/_catalog
 
 # Correct output: {"repositories":["busybox"]}
