@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: product-db-config
+  namespace: ecommerce
+data:
+  POSTGRES_DB: productdb
+  POSTGRES_USER: productuser
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: product-db-secret
+  namespace: ecommerce
+type: Opaque
+data:
+  POSTGRES_PASSWORD: cHJvZHVjdHBhc3M=  # Base64 encoded "productpass"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: product-pv
+  labels:
+    storage: product-pv-label
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /mnt/data/ecommerce/product_db_data
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: product-db-sts
+  namespace: ecommerce
+spec:
+  serviceName: product-db-service
+  replicas: 1
+  selector: 
+    matchLabels:
+      # only pods labeled with app: product-db belong to this STS
+      app: product-db
+  template:
+    metadata:
+      labels:
+        # pods created by this STS will have the label app: product-db,
+        # ensuring they're managed by the STS and
+        # that the Service (below) can target them
+        app: product-db
+    spec:
+      containers:
+        - name: product-db-container
+          image: postgres:latest
+          envFrom:
+            - configMapRef:
+                name: product-db-config
+            - secretRef:
+                name: product-db-secret
+          volumeMounts:
+            - name: product-pvc
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: product-pvc
+      spec:
+        selector:
+          matchLabels:
+            storage: product-pv-label
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-db-service
+  namespace: ecommerce
+spec:
+  clusterIP: None
+  selector:
+    # the Service will route traffic to pods labeled with app: product-db,
+    # which are the ones produced by the STS
+    app: product-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
