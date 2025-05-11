@@ -1,3 +1,5 @@
+## Setup Custom Registry inside Docker
+
 * Kubernetes and Docker don’t trust self-signed certificates by default.
 * Adding the certificate to /etc/docker/certs.d/ ensures that Docker and containerd recognize it as a valid registry.
 
