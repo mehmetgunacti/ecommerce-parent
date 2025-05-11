@@ -18,6 +18,7 @@
 		<org.mapstruct.version>1.6.3</org.mapstruct.version>
 		<openapi-generator-maven-plugin.version>7.13.0</openapi-generator-maven-plugin.version>
 		<lombok.version>1.18.38</lombok.version>
+		<postgresql.version>42.7.5</postgresql.version>
 	</properties>
 
 	<dependencyManagement>
@@ -42,6 +43,14 @@
 				<type>pom</type>
 			</dependency>
 
+			<!-- POSTGRESQL -->
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${postgresql.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
 		</dependencies>
 
 	</dependencyManagement>
@@ -64,10 +73,10 @@
 
 		<!-- H2 DATABASE -->
 		<dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
-        </dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- MAPSTRUCT -->
 		<dependency>
