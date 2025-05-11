@@ -8,7 +8,7 @@ helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --na
 
 Apply `ecommerce-dashboard.yaml`:
 ```bash
-kubectl apply -f ecommerce-dashboard.yaml
+kubectl apply -f kubernetes-dashboard.yaml
 ```
 
 Check if the service account now has access:

@@ -1,7 +1,6 @@
 # e-Commerce Parent Project
 
-1) [Setup Kubernetes Dashboard](docs/dashboard.md)
-2) [Setup Jenkins](docs/jenkins.md)
-3) [Setup local registry](docs/registry.md)
-
-
+* [Setup Kubernetes Dashboard](docs/dashboard.md)
+* [Setup ArgoCD](docs/argocd.md)
+* [Setup Jenkins (Docker)](docs/jenkins.md)
+* [Setup local registry (Docker)](docs/registry.md)

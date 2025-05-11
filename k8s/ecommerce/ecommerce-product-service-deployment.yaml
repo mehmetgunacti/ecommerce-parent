@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-deployment
+  namespace: ecommerce
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-app
+  template:
+    metadata:
+      labels:
+        app: product-app
+    spec:
+      containers:
+        - name: product-container
+          image: registry.ecommerce.local:5000/ecommerce-product-service:0.4.0
+          ports:
+            - containerPort: 9090
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-service
+  namespace: ecommerce
+spec:
+  type: NodePort    # Exposes the service externally via a fixed port on the node
+  selector:
+    app: product-app
+  ports:
+    - protocol: TCP
+      port: 9090         # The service port accessible inside the cluster (and via NodePort externally)
+      targetPort: 9090   # The container port the service maps to
+      nodePort: 30090    # The external port exposed on the node
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: product-ingress
+  namespace: ecommerce
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - http:
+        paths:
+          - path: /products
+            pathType: Prefix
+            backend:
+              service:
+                name: product-service
+                port:
+                  number: 9090
