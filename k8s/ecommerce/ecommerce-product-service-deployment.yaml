@@ -41,14 +41,13 @@ metadata:
   name: product-service
   namespace: ecommerce
 spec:
-  type: NodePort    # Exposes the service externally via a fixed port on the node
+  type: ClusterIP
   selector:
     app: product-app
   ports:
     - protocol: TCP
       port: 9090         # The service port accessible inside the cluster (and via NodePort externally)
       targetPort: 8761   # The container port the service maps to
-      nodePort: 30090    # The external port exposed on the node
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
