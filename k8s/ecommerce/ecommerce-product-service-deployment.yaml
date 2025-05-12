@@ -18,6 +18,22 @@ spec:
           image: registry.ecommerce.local:5000/ecommerce-product-service:0.4.1
           ports:
             - containerPort: 9090
+          env:
+          - name: POSTGRES_DB
+            valueFrom:
+              configMapKeyRef:
+                name: product-db-config  # Reference ConfigMap
+                key: POSTGRES_DB
+          - name: POSTGRES_USER
+            valueFrom:
+              configMapKeyRef:
+                name: product-db-config
+                key: POSTGRES_USER
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: product-db-secret  # Reference Secret
+                key: POSTGRES_PASSWORD
 ---
 apiVersion: v1
 kind: Service
